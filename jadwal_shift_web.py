@@ -70,7 +70,7 @@ st.markdown("""
     
     /* Placeholder text */
     div[data-baseweb="select"] > div:first-child > div:last-child {
-        color: #666666 !important; /* Abu-abu untuk placeholder */
+        color: #000000 !important; /* Abu-abu untuk placeholder */
     }
     
     /* Icon dropdown */
