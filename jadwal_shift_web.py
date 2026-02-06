@@ -38,12 +38,12 @@ st.markdown("""
     /* ===== SELECTBOX (Grup Shift & Jabatan) ===== */
     /* Container utama selectbox */
     .stSelectbox > div {
-        background-color: #FFFFFF !important;
+        background-color: #000000 !important;
     }
     
     /* Area pilihan yang ditampilkan */
     div[data-baseweb="select"] > div:first-child {
-        background-color: #000000 !important;
+        background-color: #FFFFFF !important;
         color: #000000 !important;
     }
     
