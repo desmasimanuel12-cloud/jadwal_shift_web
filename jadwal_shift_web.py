@@ -10,166 +10,183 @@ st.set_page_config(
     layout="wide"
 )
 
-# ===== CSS AGGRESIF UNTUK HITAM-PUTIH =====
+# ===== CSS HITAM-PUTIH LENGKAP =====
 st.markdown("""
 <style>
-    /* RESET SEMUA */
-    * {
-        --primary-color: #000000 !important;
-        --background-color: #000000 !important;
-        --text-color: #FFFFFF !important;
-    }
-    
-    /* BACKGROUND UTAMA - HITAM */
-    .stApp {
+    /* ===== BACKGROUND UTAMA ===== */
+    .stApp, .main, .block-container {
         background-color: #000000 !important;
     }
     
-    /* DEFAULT TEXT - PUTIH */
-    body, p, h1, h2, h3, h4, h5, h6, label, div, span {
+    /* ===== SEMUA TEXT PUTIH (default) ===== */
+    p, span, div, label, .stMarkdown, .stAlert, .stWarning, .stSuccess, .stInfo, .stError {
         color: #FFFFFF !important;
     }
     
-    /* ===== INPUT FIELD ===== */
-    /* Text Input */
-    input[type="text"], input[type="password"], input[type="email"], input[type="number"] {
+    /* ===== HEADER PUTIH ===== */
+    h1, h2, h3, h4, h5, h6 {
+        color: #FFFFFF !important;
+    }
+    
+    /* ===== TEXT INPUT (Nama) - Putih Background, Hitam Text ===== */
+    .stTextInput input {
         background-color: #FFFFFF !important;
-        color: #000000 !important !important;
+        color: #000000 !important;
         border: 2px solid #FFFFFF !important;
     }
     
-    /* ===== SELECTBOX (GRUP & JABATAN) ===== */
-    /* SEMUA ELEMEN DALAM SELECTBOX HITAM DI ATAS PUTIH */
-    div[data-baseweb="select"] {
+    /* ===== SELECTBOX (Grup Shift & Jabatan) ===== */
+    /* Container utama selectbox */
+    .stSelectbox > div {
         background-color: #FFFFFF !important;
     }
     
-    div[data-baseweb="select"] * {
-        color: #000000 !important !important;
+    /* Area pilihan yang ditampilkan */
+    div[data-baseweb="select"] > div:first-child {
+        background-color: #000000 !important;
+        color: #000000 !important;
     }
     
-    div[data-baseweb="select"] div {
-        background-color: #FFFFFF !important;
-        color: #000000 !important !important;
+    /* Text dalam selectbox yang ditampilkan */
+    div[data-baseweb="select"] > div:first-child > div {
+        color: #000000 !important;
     }
     
-    /* Dropdown menu */
+    /* Dropdown menu saat dibuka */
     div[role="listbox"] {
         background-color: #FFFFFF !important;
     }
     
-    /* Options */
+    /* Option dalam dropdown */
     div[role="option"] {
         background-color: #FFFFFF !important;
-        color: #000000 !important !important;
+        color: #000000 !important;
     }
     
-    /* Selected option text */
-    div[data-baseweb="select"] > div:first-child {
-        color: #000000 !important !important;
+    /* Text dalam option */
+    div[role="option"] span {
+        color: #000000 !important;
+    }
+    
+    /* Placeholder text */
+    div[data-baseweb="select"] > div:first-child > div:last-child {
+        color: #666666 !important; /* Abu-abu untuk placeholder */
+    }
+    
+    /* Icon dropdown */
+    div[data-baseweb="select"] svg {
+        fill: #000000 !important;
     }
     
     /* ===== BUTTON SUBMIT ===== */
-    /* Tombol dengan background hitam dan text putih */
-    button {
-        background-color: #000000 !important;
-        color: #FFFFFF !important !important;
+    /* Tombol utama */
+    .stButton > button {
+        background-color: #000000 !important;  /* Background hitam */
+        color: #FFFFFF !important;             /* Tulisan putih */
         border: 2px solid #FFFFFF !important;
-    }
-    
-    /* Primary button (tombol submit) */
-    button[data-testid="baseButton-primary"],
-    button[kind="primary"] {
-        background-color: #000000 !important;
-        color: #FFFFFF !important !important;
         font-weight: bold !important;
         font-size: 18px !important;
     }
     
-    button:hover {
-        background-color: #FFFFFF !important;
-        color: #000000 !important !important;
+    /* Button hover effect */
+    .stButton > button:hover {
+        background-color: #FFFFFF !important;  /* Background putih saat hover */
+        color: #000000 !important;             /* Tulisan hitam saat hover */
+        border: 2px solid #FFFFFF !important;
     }
     
-    /* ===== LABEL ===== */
-    /* Label harus putih */
-    label[for] {
+    /* ===== LABEL PUTIH ===== */
+    /* Label untuk semua input */
+    label, .stTextInput label, .stSelectbox label {
         color: #FFFFFF !important;
         font-weight: bold !important;
+        font-size: 16px !important;
     }
     
-    /* ===== OVERRIDE STREAMLIT THEME ===== */
-    /* Force black text in all inputs */
-    .st-bd, .st-bc, .st-bb, .st-be {
-        color: #000000 !important !important;
+    /* ===== SIDEBAR ===== */
+    section[data-testid="stSidebar"] {
+        background-color: #111111 !important;
     }
     
-    /* Selectbox value */
-    .stSelectbox [data-baseweb="select"] [aria-activedescendant] {
-        color: #000000 !important !important;
+    section[data-testid="stSidebar"] * {
+        color: #FFFFFF !important;
     }
     
-    /* ===== IMPORTANT: INJECT STYLE TO SHADOW DOM ===== */
-    /* Style untuk dropdown options yang ada di shadow DOM */
-    style#streamlit-selectbox-styles {
-        display: none;
+    /* ===== CUSTOM BOXES ===== */
+    .info-box {
+        border: 2px solid #FFFFFF;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px 0;
+        background-color: #111111;
     }
     
-    /* ===== LAST RESORT: JAVASCRIPT INJECTION READY ===== */
-    /* Siapkan untuk injection JavaScript jika CSS tidak cukup */
+    .info-box h3 {
+        color: #FFFFFF !important;
+    }
+    
+    .warning-box {
+        border: 2px solid #FF4444;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px 0;
+        background-color: #111111;
+    }
+    
+    /* ===== ALERT/MESSAGE ===== */
+    .stAlert, .stError, .stWarning, .stSuccess, .stInfo {
+        color: #FFFFFF !important;
+    }
+    
+    /* ===== DIVIDER ===== */
+    hr {
+        border-color: #FFFFFF !important;
+    }
+    
+    /* ===== FIX UNTUK SEMUA ELEMEN DROPDOWN ===== */
+    /* Target semua elemen dalam dropdown */
+    [data-baseweb="select"] [role="listbox"] [role="option"] {
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    [data-baseweb="select"] [role="listbox"] [role="option"]:hover {
+        background-color: #f0f0f0 !important;
+        color: black !important;
+    }
+    
+    /* Text yang dipilih di dropdown */
+    [data-baseweb="select"] [aria-activedescendant] {
+        color: black !important;
+    }
+    
+    /* ===== OVERRIDE COLOR PICKER ===== */
+    /* Memastikan semua text dalam selectbox hitam */
+    .stSelectbox div[data-baseweb="select"] {
+        color: #000000 !important;
+    }
+    
+    .stSelectbox div[data-baseweb="select"] div {
+        color: #000000 !important;
+    }
+    
+    /* ===== FORCE BLACK TEXT IN SELECTED OPTIONS ===== */
+    div[data-baseweb="select"] > div > div {
+        color: #000000 !important;
+    }
+    
+    /* ===== FORCE BUTTON STYLING ===== */
+    button[data-testid="baseButton-primary"] {
+        background-color: #000000 !important;
+        color: #FFFFFF !important;
+        border: 2px solid #FFFFFF !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:hover {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+    }
 </style>
-
-<script>
-// JavaScript untuk memastikan warna benar (jika CSS tidak cukup)
-document.addEventListener('DOMContentLoaded', function() {
-    // Fungsi untuk mengubah warna selectbox
-    function fixSelectboxColors() {
-        // Cari semua selectbox
-        const selectboxes = document.querySelectorAll('[data-baseweb="select"]');
-        
-        selectboxes.forEach(selectbox => {
-            // Set background putih dan text hitam
-            selectbox.style.backgroundColor = 'white';
-            selectbox.style.color = 'black';
-            
-            // Set semua child elements
-            const children = selectbox.querySelectorAll('*');
-            children.forEach(child => {
-                child.style.color = 'black';
-                child.style.backgroundColor = 'white';
-            });
-            
-            // Set value yang ditampilkan
-            const displayValue = selectbox.querySelector('[aria-activedescendant]');
-            if (displayValue) {
-                displayValue.style.color = 'black';
-            }
-        });
-    }
-    
-    // Jalankan segera dan setiap 500ms untuk menangkap perubahan
-    fixSelectboxColors();
-    setInterval(fixSelectboxColors, 500);
-    
-    // Fix button colors
-    function fixButtonColors() {
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(button => {
-            if (button.textContent.includes('TAMPILKAN JADWAL') || 
-                button.textContent.includes('Submit') ||
-                button.getAttribute('kind') === 'primary') {
-                button.style.backgroundColor = 'black';
-                button.style.color = 'white';
-                button.style.border = '2px solid white';
-                button.style.fontWeight = 'bold';
-            }
-        });
-    }
-    
-    fixButtonColors();
-    setInterval(fixButtonColors, 500);
-});
-</script>
 """, unsafe_allow_html=True)
 
 class ShiftSchedulerWeb:
