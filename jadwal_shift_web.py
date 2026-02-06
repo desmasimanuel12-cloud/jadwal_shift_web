@@ -10,32 +10,51 @@ st.set_page_config(
     layout="wide"
 )
 
-# ===== CSS HITAM-PUTIH DENGAN FIX MOBILE =====
+# ===== CSS HITAM-PUTIH LENGKAP =====
 st.markdown("""
 <style>
-    /* Background hitam untuk seluruh halaman */
+    /* ===== BACKGROUND UTAMA ===== */
     .stApp {
-        background-color: #000000;
-        color: #FFFFFF;
+        background-color: #000000 !important;
+        color: #FFFFFF !important;
     }
     
-    /* Header putih di atas hitam */
+    /* ===== SEMUA TEXT PUTIH ===== */
+    p, span, div, label, .stMarkdown, .stAlert, .stWarning, .stSuccess, .stInfo, .stError {
+        color: #FFFFFF !important;
+    }
+    
+    /* ===== HEADER PUTIH ===== */
     h1, h2, h3, h4, h5, h6 {
         color: #FFFFFF !important;
     }
     
-    /* Text putih */
-    p, div, span, label {
-        color: #FFFFFF !important;
+    /* ===== INPUT FIELD ===== */
+    /* Text Input */
+    .stTextInput>div>div>input {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        border: 2px solid #FFFFFF !important;
     }
     
-    /* Input field: putih dengan tulisan hitam */
-    .stTextInput>div>div>input {
+    /* Selectbox (Grup Shift & Jabatan) */
+    .stSelectbox>div>div>div {
         background-color: #FFFFFF !important;
         color: #000000 !important;
     }
     
-    /* Button: putih dengan tulisan hitam */
+    /* Selectbox dropdown options */
+    .stSelectbox>div>div>div[role="listbox"]>div {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+    }
+    
+    /* Selectbox text yang terpilih */
+    .stSelectbox>div>div>div[data-baseweb="select"]>div {
+        color: #000000 !important;
+    }
+    
+    /* ===== BUTTON SUBMIT ===== */
     .stButton>button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
@@ -43,60 +62,42 @@ st.markdown("""
         font-weight: bold !important;
     }
     
-    /* ===== PERBAIKAN SELECTBOX UNTUK MOBILE & DESKTOP ===== */
-    /* Container selectbox */
-    .stSelectbox > div > div {
-        background-color: white !important;
-    }
-    
-    /* Text di dalam selectbox */
-    .stSelectbox > div > div > div {
-        color: black !important;
-    }
-    
-    /* Dropdown menu */
-    div[data-baseweb="popover"] {
-        background-color: white !important;
-    }
-    
-    /* Item di dropdown */
-    div[data-baseweb="menu"] li {
-        background-color: white !important;
-        color: black !important;
-    }
-    
-    /* Item hover di dropdown */
-    div[data-baseweb="menu"] li:hover {
+    /* Button hover effect */
+    .stButton>button:hover {
         background-color: #000000 !important;
-        color: black !important;
+        color: #FFFFFF !important;
+        border: 2px solid #FFFFFF !important;
     }
     
-    /* Sidebar hitam */
+    /* ===== SIDEBAR ===== */
     [data-testid="stSidebar"] {
-        background-color: #000000 !important;
+        background-color: #111111 !important;
     }
     
-    /* Expander */
-    .streamlit-expanderHeader {
-        background-color: #000000 !important;
+    [data-testid="stSidebar"] * {
         color: #FFFFFF !important;
     }
     
-    /* Divider putih */
+    /* ===== EXPANDER ===== */
+    .streamlit-expanderHeader {
+        background-color: #222222 !important;
+        color: #FFFFFF !important;
+    }
+    
+    /* ===== DIVIDER ===== */
     hr {
         border-color: #FFFFFF !important;
     }
     
-    /* Box info dengan border putih */
+    /* ===== CUSTOM BOXES ===== */
     .info-box {
         border: 2px solid #FFFFFF;
         border-radius: 10px;
         padding: 20px;
         margin: 10px 0;
-        background-color: #000000;
+        background-color: #111111;
     }
     
-    /* Box warning dengan border merah */
     .warning-box {
         border: 2px solid #FF4444;
         border-radius: 10px;
@@ -105,17 +106,46 @@ st.markdown("""
         background-color: #111111;
     }
     
-    /* ===== MEDIA QUERY UNTUK MOBILE ===== */
-    @media (max-width: 768px) {
-        /* Perbesar font di mobile */
-        .stSelectbox > div > div {
-            font-size: 16px !important;
-        }
-        
-        /* Pastikan dropdown full width di mobile */
-        .stSelectbox {
-            width: 100% !important;
-        }
+    /* ===== FIX UNTUK DROPDOWN OPTIONS ===== */
+    /* Background dropdown saat dibuka */
+    div[data-baseweb="select"] div {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+    }
+    
+    /* Option dalam dropdown */
+    div[role="option"] {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+    }
+    
+    /* Text dalam option */
+    div[role="option"] span {
+        color: #000000 !important;
+    }
+    
+    /* ===== LABEL PUTIH ===== */
+    label {
+        color: #FFFFFF !important;
+        font-weight: bold;
+    }
+    
+    /* ===== STREAMLIT COMPONENTS ===== */
+    /* Radio button */
+    .stRadio > div {
+        color: #FFFFFF !important;
+    }
+    
+    /* Checkbox */
+    .stCheckbox > label {
+        color: #FFFFFF !important;
+    }
+    
+    /* Code block */
+    code {
+        background-color: #222222 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #FFFFFF !important;
     }
 </style>
 """, unsafe_allow_html=True)
