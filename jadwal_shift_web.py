@@ -118,7 +118,7 @@ st.markdown("""
         border-radius: 10px;
         padding: 20px;
         margin: 10px 0;
-        background-color: #111111;
+        background-color: #000000;
     }
     
     .info-box h3 {
@@ -130,7 +130,7 @@ st.markdown("""
         border-radius: 10px;
         padding: 20px;
         margin: 10px 0;
-        background-color: #111111;
+        background-color: #000000;
     }
     
     /* ===== ALERT/MESSAGE ===== */
@@ -151,7 +151,7 @@ st.markdown("""
     }
     
     [data-baseweb="select"] [role="listbox"] [role="option"]:hover {
-        background-color: #f0f0f0 !important;
+        background-color: #FFFFFF !important;
         color: black !important;
     }
     
