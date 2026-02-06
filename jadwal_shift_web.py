@@ -54,7 +54,7 @@ st.markdown("""
     
     /* Dropdown menu saat dibuka */
     div[role="listbox"] {
-        background-color: #FFFFFF !important;
+        background-color: #000000 !important;
     }
     
     /* Option dalam dropdown */
