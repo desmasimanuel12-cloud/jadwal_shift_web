@@ -98,6 +98,117 @@ setInterval(() => {
         });
     });
 }, 500);
+
+/* ===== GAMBAR: AGAR DAPAT DI ZOOM ===== */
+    .stImage > img,
+    .stImage > div > img,
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        -webkit-user-drag: auto !important;
+        user-drag: auto !important;
+        touch-action: auto !important;
+        cursor: zoom-in !important;
+        transition: transform 0.3s ease !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    /* Izinkan pinch zoom pada gambar di mobile */
+    @media (hover: none) and (pointer: coarse) {
+        .stImage > img,
+        .stImage > div > img,
+        img {
+            touch-action: auto !important;
+            -webkit-user-drag: auto !important;
+            user-drag: auto !important;
+            cursor: zoom-in !important;
+            min-height: 200px !important;
+            min-width: 200px !important;
+        }
+        
+        .stImage,
+        .stImage > div {
+            touch-action: auto !important;
+        }
+    }
+    
+    /* Efek saat gambar di-tap/klik */
+    .stImage > img:active,
+    img:active {
+        cursor: zoom-out !important;
+        transform: scale(1.5) !important;
+        z-index: 1000 !important;
+        position: relative !important;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    /* ===== SIDEBAR ===== */
+    section[data-testid="stSidebar"] {
+        background-color: #111111 !important;
+    }
+    
+    /* ===== CUSTOM BOXES ===== */
+    .info-box {
+        border: 2px solid #FFFFFF;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px 0;
+        background-color: #111111;
+    }
+</style>
+
+<script>
+// JavaScript untuk zoom gambar
+document.addEventListener('DOMContentLoaded', function() {
+    // Enable zoom on all images
+    function enableImageZoom() {
+        const images = document.querySelectorAll('.stImage img, img');
+        
+        images.forEach(img => {
+            img.style.cursor = 'zoom-in';
+            
+            img.onclick = function() {
+                if (this.style.transform === 'scale(1.5)') {
+                    this.style.transform = 'scale(1)';
+                    this.style.cursor = 'zoom-in';
+                    this.style.zIndex = '1';
+                    this.style.position = 'relative';
+                } else {
+                    this.style.transform = 'scale(1.5)';
+                    this.style.cursor = 'zoom-out';
+                    this.style.zIndex = '1000';
+                    this.style.position = 'relative';
+                }
+            };
+        });
+    }
+    
+    // Run on load and periodically
+    enableImageZoom();
+    setInterval(enableImageZoom, 1000);
+    
+    // Fix untuk dropdown colors
+    function fixDropdownColors() {
+        document.querySelectorAll('[data-baseweb="select"]').forEach(el => {
+            el.style.backgroundColor = 'white';
+            el.querySelectorAll('*').forEach(child => {
+                child.style.color = 'black';
+                child.style.backgroundColor = 'white';
+            });
+        });
+    }
+    
+    fixDropdownColors();
+    setInterval(fixDropdownColors, 500);
+});
+
 </script>
 """, unsafe_allow_html=True)
 
