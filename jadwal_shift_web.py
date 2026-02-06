@@ -178,7 +178,7 @@ st.markdown("""
     /* ===== FORCE BUTTON STYLING ===== */
     button[data-testid="baseButton-primary"] {
         background-color: #000000 !important;
-        color: #FFFFFF !important;
+        color: #000000 !important; //edit
         border: 2px solid #FFFFFF !important;
     }
     
