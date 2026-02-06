@@ -67,18 +67,18 @@ st.markdown("""
     
     /* Item hover di dropdown */
     div[data-baseweb="menu"] li:hover {
-        background-color: #f0f0f0 !important;
+        background-color: #000000 !important;
         color: black !important;
     }
     
     /* Sidebar hitam */
     [data-testid="stSidebar"] {
-        background-color: #111111 !important;
+        background-color: #000000 !important;
     }
     
     /* Expander */
     .streamlit-expanderHeader {
-        background-color: #222222 !important;
+        background-color: #000000 !important;
         color: #FFFFFF !important;
     }
     
@@ -93,7 +93,7 @@ st.markdown("""
         border-radius: 10px;
         padding: 20px;
         margin: 10px 0;
-        background-color: #111111;
+        background-color: #000000;
     }
     
     /* Box warning dengan border merah */
