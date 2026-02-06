@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ===== CSS HITAM-PUTIH =====
+# ===== CSS HITAM-PUTIH DENGAN FIX MOBILE =====
 st.markdown("""
 <style>
     /* Background hitam untuk seluruh halaman */
@@ -25,24 +25,50 @@ st.markdown("""
     }
     
     /* Text putih */
-    p, div, span {
+    p, div, span, label {
         color: #FFFFFF !important;
     }
     
     /* Input field: putih dengan tulisan hitam */
-    .stTextInput>div>div>input,
-    .stSelectbox>div>div>select,
-    .stTextArea>div>div>textarea {
-        background-color: #000000 !important;
-        color: #FFFFFF !important;
+    .stTextInput>div>div>input {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
     }
     
     /* Button: putih dengan tulisan hitam */
     .stButton>button {
-        background-color: #000000 !important;
-        color: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
         border: 2px solid #FFFFFF !important;
         font-weight: bold !important;
+    }
+    
+    /* ===== PERBAIKAN SELECTBOX UNTUK MOBILE & DESKTOP ===== */
+    /* Container selectbox */
+    .stSelectbox > div > div {
+        background-color: white !important;
+    }
+    
+    /* Text di dalam selectbox */
+    .stSelectbox > div > div > div {
+        color: black !important;
+    }
+    
+    /* Dropdown menu */
+    div[data-baseweb="popover"] {
+        background-color: white !important;
+    }
+    
+    /* Item di dropdown */
+    div[data-baseweb="menu"] li {
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    /* Item hover di dropdown */
+    div[data-baseweb="menu"] li:hover {
+        background-color: #f0f0f0 !important;
+        color: black !important;
     }
     
     /* Sidebar hitam */
@@ -78,12 +104,24 @@ st.markdown("""
         margin: 10px 0;
         background-color: #111111;
     }
+    
+    /* ===== MEDIA QUERY UNTUK MOBILE ===== */
+    @media (max-width: 768px) {
+        /* Perbesar font di mobile */
+        .stSelectbox > div > div {
+            font-size: 16px !important;
+        }
+        
+        /* Pastikan dropdown full width di mobile */
+        .stSelectbox {
+            width: 100% !important;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
 class ShiftSchedulerWeb:
     def __init__(self):
-        # Auto-detect folder
         if getattr(sys, 'frozen', False):
             self.script_dir = os.path.dirname(sys.executable)
         else:
@@ -91,7 +129,6 @@ class ShiftSchedulerWeb:
         
         os.chdir(self.script_dir)
         
-        # Data
         self.ls_data = {"LL": "Rendy", "PL": "Zainul", "ML": "Luqman"}
         self.lc_data = {
             "A": "Luqman kecil",
@@ -104,70 +141,55 @@ class ShiftSchedulerWeb:
     
     def get_image_files(self):
         files = []
-        targets = ["SS januari.png", "SS mei.png", "SS september.png", "SS libur.png"]
-        
-        for target in targets:
+        for target in ["SS januari.png", "SS mei.png", "SS september.png", "SS libur.png"]:
             if os.path.exists(target):
                 files.append(target)
-        
         return files
     
     def run(self):
-        # ===== SIDEBAR =====
+        # SIDEBAR
         with st.sidebar:
-            st.markdown("## 🔧 INFORMASI SISTEM")
-            st.write(f"**Folder program:**")
-            st.code(self.script_dir)
-            
-            # Cek file
-            st.markdown("### 📋 STATUS FILE")
+            st.markdown("## 🔧 INFORMASI")
+            st.write(f"**Folder:** {self.script_dir}")
             images = self.get_image_files()
-            if images:
-                st.success(f"✅ {len(images)} file ditemukan")
-                for img in images:
-                    st.write(f"• {img}")
-            else:
-                st.error("❌ File gambar tidak ditemukan")
-            
-            st.markdown("---")
-            st.markdown("### 📌 PANDUAN")
-            st.markdown("""
-            1. Isi form dengan lengkap
-            2. Pilih grup dan jabatan
-            3. Tekan tombol **TAMPILKAN JADWAL**
-            4. Untuk **Managerial** akan ditolak aksesnya
-            5. Untuk **Protech/Mekanik** akan tampil jadwal
-            """)
+            st.markdown(f"**File:** {len(images)} ditemukan")
+            for img in images:
+                st.write(f"• {img}")
         
-        # ===== HEADER UTAMA =====
+        # HEADER
         st.markdown("<h1 style='text-align: center;'>📅 JADWAL SHIFT 4G MAINLINE</h1>", unsafe_allow_html=True)
         st.markdown("<h3 style='text-align: center;'>PHILIP MORRIS INTERNATIONAL</h3>", unsafe_allow_html=True)
         
-        # ===== FORM INPUT =====
+        # FORM INPUT - GUNAKAN SELECTBOX BIASA DENGAN CSS YANG SUDAH DIPERBAIKI
         st.markdown("<div class='info-box'>", unsafe_allow_html=True)
-        st.markdown("### 📝 INPUT DATA KARYAWAN")
+        st.markdown("### 📝 INPUT DATA")
         
         col1, col2, col3 = st.columns(3)
+        with col1: 
+            name = st.text_input("NAMA LENGKAP")
         
-        with col1:
-            name = st.text_input("NAMA LENGKAP", placeholder="Masukkan nama Anda")
+        with col2: 
+            # Menggunakan selectbox biasa dengan CSS fix
+            group = st.selectbox("GRUP SHIFT", ["PILIH"] + self.groups)
         
-        with col2:
-            group = st.selectbox("GRUP SHIFT", ["PILIH GRUP"] + self.groups)
+        with col3: 
+            position = st.selectbox("JABATAN", ["PILIH"] + self.positions)
         
-        with col3:
-            position = st.selectbox("JABATAN", ["PILIH JABATAN"] + self.positions)
+        # Alternatif: Jika masih bermasalah, ganti dengan radio button
+        # Uncomment kode di bawah jika selectbox masih bermasalah di mobile
+        # st.markdown("**GRUP SHIFT**")
+        # group = st.radio("Pilih Grup:", self.groups, horizontal=True, key="group")
+        # st.markdown("**JABATAN**")
+        # position = st.radio("Pilih Jabatan:", ["Protech", "Mekanik", "Managerial"], key="position")
         
-        # Tombol submit
         col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            submit = st.button("🚀 TAMPILKAN JADWAL", type="primary", use_container_width=True)
+        with col2: 
+            submit = st.button("🚀 TAMPILKAN JADWAL", use_container_width=True)
         
         st.markdown("</div>", unsafe_allow_html=True)
         
-        # ===== PROCESS DATA =====
         if submit:
-            if not name or group == "PILIH GRUP" or position == "PILIH JABATAN":
+            if not name or group == "PILIH" or position == "PILIH":
                 st.error("❌ HARAP LENGKAPI SEMUA FIELD!")
                 return
             
@@ -175,77 +197,44 @@ class ShiftSchedulerWeb:
                 st.markdown("<div class='warning-box'>", unsafe_allow_html=True)
                 st.markdown("## ⚠️ AKSES DITOLAK")
                 st.markdown("### Jabatan anda terlalu tinggi untuk program sederhana ini")
-                st.markdown("""
-                **SILAKAN HUBUNGI TIM IT UNTUK AKSES YANG SESUAI**
-                """)
                 st.markdown("</div>", unsafe_allow_html=True)
                 return
             
             if position in ["Protech", "Mekanik"]:
                 self.show_schedule(name, group, position)
-            else:
-                st.error("Jabatan tidak valid!")
     
     def show_schedule(self, name, group, position):
-        # Informasi user
         st.markdown("<div class='info-box'>", unsafe_allow_html=True)
-        st.markdown(f"### 👤 INFORMASI KARYAWAN")
-        st.markdown(f"**Nama:** {name}")
-        st.markdown(f"**Grup Shift:** {group}")
-        st.markdown(f"**Jabatan:** {position}")
+        st.markdown(f"### 👤 {name} | 🏷️ Grup {group} | 💼 {position}")
         st.markdown("</div>", unsafe_allow_html=True)
         
-        # LC Info
         lc_name = self.lc_data.get(group, "Tidak Diketahui")
-        st.markdown("<div class='info-box'>", unsafe_allow_html=True)
-        st.markdown(f"### 🎯 LINE COORDINATOR (LC) GRUP {group}")
+        st.markdown(f"### 🎯 LINE COORDINATOR (LC) GRUP {group}:")
         st.markdown(f"# {lc_name}")
-        st.markdown("</div>", unsafe_allow_html=True)
         
-        # LS Info
         st.markdown("### 👥 LEADERSHIP TEAM")
         cols = st.columns(3)
-        
         for idx, (role, ls_name) in enumerate(self.ls_data.items()):
             with cols[idx]:
                 st.markdown(f"""
-                <div style='border: 2px solid white; padding: 15px; border-radius: 10px; background-color: #111111;'>
+                <div style='border: 2px solid white; padding: 15px; border-radius: 10px;'>
                     <h4 style='text-align: center;'>{role}</h4>
                     <h3 style='text-align: center;'>{ls_name}</h3>
                 </div>
                 """, unsafe_allow_html=True)
         
-        # Tampilkan gambar
-        st.markdown("---")
+        # GAMBAR
         st.markdown("### 📋 JADWAL SHIFT 2026")
-        
         image_files = self.get_image_files()
-        order = ["januari", "mei", "september", "libur"]
-        sorted_images = []
-        
-        for keyword in order:
-            for img_file in image_files:
-                if keyword in img_file.lower():
-                    sorted_images.append(img_file)
-                    break
-        
-        for img_file in sorted_images:
+        for img_file in image_files:
             try:
-                st.markdown(f"#### 📄 {img_file}")
                 img = Image.open(img_file)
+                st.markdown(f"#### {img_file}")
                 st.image(img)
                 st.markdown("---")
-            except Exception as e:
-                st.error(f"Gagal memuat {img_file}: {str(e)}")
-        
-        if not image_files:
-            st.warning("⚠️ File gambar jadwal tidak ditemukan!")
+            except:
+                st.error(f"Gagal memuat {img_file}")
 
-# ===== JALANKAN APLIKASI =====
 if __name__ == "__main__":
-    print("\n" + "="*60)
-    print("JADWAL SHIFT 4G MAINLINE - WEB VERSION")
-    print("="*60)
-    
     app = ShiftSchedulerWeb()
     app.run()
