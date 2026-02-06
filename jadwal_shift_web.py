@@ -10,62 +10,175 @@ st.set_page_config(
     layout="wide"
 )
 
-# ===== CSS SIMPLE UNTUK FIX DARK/LIGHT MODE =====
+# ===== CSS UNTUK MENGATASI DARK/LIGHT MODE HP =====
 st.markdown("""
 <style>
-    /* NONAKTIFKAN PENGARUH TEMA SISTEM */
+    /* ===== OVERRIDE SYSTEM DARK/LIGHT MODE ===== */
+    /* Paksa warna tanpa menghiraukan tema sistem */
     :root {
-        color-scheme: only light !important;
+        color-scheme: light dark;
     }
     
-    /* BACKGROUND HITAM */
+    @media (prefers-color-scheme: dark) {
+        /* Saat dark mode aktif di HP */
+        :root {
+            --select-bg: #FFFFFF !important;
+            --select-text: #000000 !important;
+            --button-bg: #000000 !important;
+            --button-text: #FFFFFF !important;
+        }
+    }
+    
+    @media (prefers-color-scheme: light) {
+        /* Saat light mode aktif di HP */
+        :root {
+            --select-bg: #FFFFFF !important;
+            --select-text: #000000 !important;
+            --button-bg: #000000 !important;
+            --button-text: #FFFFFF !important;
+        }
+    }
+    
+    /* ===== BACKGROUND UTAMA ===== */
     .stApp {
         background-color: #000000 !important;
     }
     
-    /* SEMUA TEXT PUTIH */
-    * {
+    /* ===== TEXT PUTIH UNTUK SEMUA KONTEN ===== */
+    h1, h2, h3, h4, h5, h6, p, label, div, span {
         color: #FFFFFF !important;
     }
     
-    /* EKSEPSI: ELEMEN INPUT HARUS PUTIH BACKGROUND, HITAM TEXT */
-    input, 
-    [data-baseweb="select"], 
-    [data-baseweb="select"] *,
-    [role="listbox"],
-    [role="option"],
-    [role="option"] * {
-        background-color: #FFFFFF !important;
-        color: #000000 !important !important;
+    /* ===== FIX UNTUK SELECTBOX (Grup & Jabatan) ===== */
+    /* Paksa warna untuk semua state selectbox */
+    div[data-baseweb="select"] {
+        background-color: var(--select-bg, #FFFFFF) !important;
     }
     
-    /* BUTTON: HITAM BACKGROUND, PUTIH TEXT */
-    button, .stButton > button {
-        background-color: #000000 !important;
-        color: #FFFFFF !important !important;
+    /* Text dalam selectbox */
+    div[data-baseweb="select"] > div:first-child {
+        background-color: var(--select-bg, #FFFFFF) !important;
+        color: var(--select-text, #000000) !important;
+    }
+    
+    /* Dropdown menu */
+    div[role="listbox"] {
+        background-color: var(--select-bg, #FFFFFF) !important;
+    }
+    
+    /* Options dalam dropdown */
+    div[role="option"] {
+        background-color: var(--select-bg, #FFFFFF) !important;
+        color: var(--select-text, #000000) !important;
+    }
+    
+    /* Text dalam options */
+    div[role="option"] span,
+    div[role="option"] div {
+        color: var(--select-text, #000000) !important;
+    }
+    
+    /* Placeholder text */
+    div[data-baseweb="select"] > div:first-child > div:last-child {
+        color: #666666 !important;
+    }
+    
+    /* ===== BUTTON SUBMIT ===== */
+    .stButton > button,
+    button[kind="primary"] {
+        background-color: var(--button-bg, #000000) !important;
+        color: var(--button-text, #FFFFFF) !important;
+        border: 2px solid #FFFFFF !important;
+        font-weight: bold !important;
+    }
+    
+    /* ===== INPUT TEXT (Nama) ===== */
+    .stTextInput input {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
         border: 2px solid #FFFFFF !important;
     }
     
-    /* OVERRIDE UNTUK DROPDOWN OPTIONS */
-    div[role="option"] span {
-        color: #000000 !important !important;
+    /* ===== FIX COLOR PICKER ===== */
+    /* Paksa semua text dalam dropdown hitam */
+    [data-baseweb="select"] * {
+        color: #000000 !important;
     }
     
-    /* HAPUS SEMUA EFEK TRANSPARANSI DARK MODE */
-    * {
-        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.5) !important;
+    /* ===== FORCE LIGHT SCHEME FOR INPUTS ===== */
+    /* Buat elemen input tidak terpengaruh tema sistem */
+    input, select, textarea, [contenteditable] {
+        color-scheme: light !important;
+    }
+    
+    /* ===== MEDIA QUERY UNTUK MOBILE ===== */
+    @media (max-width: 768px) {
+        /* Tambahan styling untuk mobile */
+        .stSelectbox, .stTextInput, .stButton {
+            font-size: 16px !important; /* Mencegah zoom di iOS */
+        }
+        
+        /* Pastikan selectbox terlihat baik di mobile */
+        div[data-baseweb="select"] {
+            min-height: 44px !important; /* Minimum touch target untuk iOS */
+        }
     }
 </style>
 
 <script>
-// Memaksa warna hitam untuk semua dropdown content
-document.addEventListener('click', function() {
-    setTimeout(() => {
-        document.querySelectorAll('[role="option"]').forEach(opt => {
-            opt.style.color = 'black';
-            opt.querySelectorAll('*').forEach(el => el.style.color = 'black');
+// JavaScript untuk memaksa warna hitam pada dropdown di semua kondisi
+document.addEventListener('DOMContentLoaded', function() {
+    function forceBlackTextInDropdowns() {
+        // Target semua elemen dalam dropdown
+        const dropdowns = document.querySelectorAll('[data-baseweb="select"]');
+        
+        dropdowns.forEach(dropdown => {
+            // Set background putih dan text hitam
+            dropdown.style.backgroundColor = 'white';
+            
+            // Set semua child elements
+            const children = dropdown.querySelectorAll('*');
+            children.forEach(child => {
+                child.style.color = 'black';
+                child.style.backgroundColor = 'white';
+            });
+            
+            // Khusus untuk text yang ditampilkan
+            const displayValue = dropdown.querySelector('div[aria-activedescendant]');
+            if (displayValue) {
+                displayValue.style.color = 'black';
+            }
+            
+            // Khusus untuk dropdown options
+            const options = document.querySelectorAll('[role="option"]');
+            options.forEach(option => {
+                option.style.color = 'black';
+                option.style.backgroundColor = 'white';
+            });
         });
-    }, 100);
+        
+        // Juga fix untuk tombol
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            if (button.textContent.includes('TAMPILKAN') || 
+                button.textContent.includes('JADWAL') ||
+                button.getAttribute('kind') === 'primary') {
+                button.style.backgroundColor = 'black';
+                button.style.color = 'white';
+                button.style.border = '2px solid white';
+            }
+        });
+    }
+    
+    // Jalankan segera
+    forceBlackTextInDropdowns();
+    
+    // Jalankan setiap kali ada perubahan (dropdown dibuka/ditutup)
+    const observer = new MutationObserver(forceBlackTextInDropdowns);
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Juga jalankan secara periodic untuk memastikan
+    setInterval(forceBlackTextInDropdowns, 1000);
 });
 </script>
 """, unsafe_allow_html=True)
