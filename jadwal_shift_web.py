@@ -524,9 +524,9 @@ class ShiftSchedulerWeb:
             if position == "Managerial":
                 st.markdown("<div class='custom-box' style='border-color: #ff4444;'>", unsafe_allow_html=True)
                 st.markdown("## ⚠️ AKSES DITOLAK")
-                st.markdown("### Jabatan anda terlalu tinggi untuk program sederhana ini")
+                st.markdown("### Mohon Maaf, Jabatan anda terlalu tinggi untuk program sederhana ini")
                 st.markdown("""
-                **Silakan hubungi tim IT untuk akses yang sesuai dengan jabatan Anda.**
+                **Sekali lagi mohon maaf pak 😁.**
                 """)
                 st.markdown("</div>", unsafe_allow_html=True)
                 return
